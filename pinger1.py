@@ -6,6 +6,8 @@
 #Pinger v1 
 #Revision date 5/31/15
 
+import os
+import platform
 
 #Function to convert an integer to an IP string
 def IntToIP (ipRangeInt):
@@ -58,6 +60,16 @@ for x in range (0, 32):
 #This needs to have threading to quickly ping across all addresses
 print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
 
+#testing pring command
+#os.system("ping -c 4 8.8.8.8")
+plat = platform.release()
+
+#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
+if plat is 'Windows':
+	os.system("ping 8.8.8.8")
+
+else:
+	os.system("ping -c 4 8.8.8.8")
 
 
 #print all available addresses
