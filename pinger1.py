@@ -17,6 +17,17 @@ def IntToIP (ipRangeInt):
 	oct4 = int(ipRangeInt) % 256
 	return '%(oct1)s.%(oct2)s.%(oct3)s.%(oct4)s' % locals()
 
+#Function determines platform, pings address, and returns whether the ping was successful or not
+def PingAddr (ipaddr):
+	plat = platform.release()
+
+	#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
+	if plat is 'Windows':
+		response = os.system("ping " + ipaddr)
+
+	else:
+		response = os.system("ping -c 4 " + ipaddr)
+
 
 print "Welcome to the CALO Pinger!"
 networkID = raw_input('Please enter the network ID of the BB switch - ')
@@ -60,19 +71,21 @@ for x in range (0, 32):
 #This needs to have threading to quickly ping across all addresses
 print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
 
+openAddrs = []
+
 #testing pring command
 #os.system("ping -c 4 8.8.8.8")
-plat = platform.release()
+for x in range (1, 32):
+	testAddr = IntToIP(ipArr[x])
 
-#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
-if plat is 'Windows':
-	os.system("ping 8.8.8.8")
+	if PingAddr(testAddr) == 0:
+		openAddrs.append(testAddr)
 
-else:
-	os.system("ping -c 4 8.8.8.8")
+
 
 
 #print all available addresses
-
+for addr in openAddrs:
+	print addr
 
 
