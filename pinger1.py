@@ -27,6 +27,7 @@ def PingAddr (ipaddr):
 
 	else:
 		response = os.system("ping -c 4 " + ipaddr)
+	return response
 
 
 print "Welcome to the CALO Pinger!"
@@ -88,4 +89,5 @@ for x in range (1, 32):
 for addr in openAddrs:
 	print addr
 
+raw_input("Please press Return to close the Window")
 
