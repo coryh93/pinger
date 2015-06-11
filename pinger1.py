@@ -22,7 +22,7 @@ def IntToIP (ipRangeInt):
 	return '%(oct1)s.%(oct2)s.%(oct3)s.%(oct4)s' % locals()
 
 #Function determines platform, pings address, and returns whether the ping was successful or not
-def PingAddr (ipaddr):
+def PingAddr (ipaddr, openAddrs):
 	plat = platform.system()
 
 	#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
@@ -103,6 +103,8 @@ print "Pinging Addresses...please wait a moment...Go play fooseball or something
 #threading the functions
 #This only returns the last available address. Not ideal, but working.
 #need to figure out how to store available address into a list
+#Threads don't seem to be working in bash, but worked on windows. I'm not sure if this is a difference in OS, or if I just messed something up
+#But I swear to God mulitple threads were running.
 openAddrs = Queue.Queue()
 for x in range (1, 31):
 
@@ -123,8 +125,8 @@ print s
 
 
 #print all available addresses
-for addr in openAddrs:
-	print addr
+#for addr in openAddrs:
+#	print addr
 
 raw_input("Please press Return to close the Window")
 
