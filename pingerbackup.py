@@ -3,8 +3,14 @@
 #DHCP and static ranges.
 
 #Written by Cory Hinton
-#Pinger v1 
-#Revision date 6/10/15
+#Pinger v1 Backup
+#Revision date 5/31/15
+
+
+
+
+
+#This is my last know working version of the code. No threads, just pings and responses. If I ever end up back here, I really fucked up
 
 import os
 import platform
@@ -19,30 +25,17 @@ def IntToIP (ipRangeInt):
 
 #Function determines platform, pings address, and returns whether the ping was successful or not
 def PingAddr (ipaddr):
-	plat = platform.system()
+	plat = platform.release()
 
 	#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
 	if plat is 'Windows':
 		response = os.system("ping " + ipaddr)
-		
-		
 
 	else:
 		response = os.system("ping -c 4 " + ipaddr)
-		
-	#if the ping responds, it returns 0. Since I want ones that don't respond, I want not equal to 0
-	
-	if response != 0: 
-		print "entered if statement"
-		openAddrs.put(ipaddr)
-		print "end of if"
-	print "thread end"
-	#Thread doesn't seem to be closing. I don't know how to fix this quite yet, but will work on it
+	return response
 
 
-
-
-#MAIN THREAD
 print "Welcome to the CALO Pinger!"
 networkID = raw_input('Please enter the network ID of the BB switch - ')
 
@@ -85,35 +78,15 @@ for x in range (0, 32):
 #This needs to have threading to quickly ping across all addresses
 print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
 
-#openAddrs = []
+openAddrs = []
 
 #testing pring command
 #os.system("ping -c 4 8.8.8.8")
-#for x in range (1, 32):
-#	testAddr = IntToIP(ipArr[x])
-#
-#	if PingAddr(testAddr) == 0:
-#		openAddrs.append(testAddr)
-
-
-#threading the functions
-#This only returns the last available address. Not ideal, but working.
-#need to figure out how to store available address into a list
-openAddrs = Queue.Queue()
-for x in range (1, 31):
-
+for x in range (1, 32):
 	testAddr = IntToIP(ipArr[x])
-	
-	#spawns the thread
-	t = threading.Thread(target=PingAddr, args = (testAddr, openAddrs))
-	t.setDaemon(True)
-	t.start()
-	
-	
-	
-s = openAddrs.get()
-print s
 
+	if PingAddr(testAddr) == 0:
+		openAddrs.append(testAddr)
 
 
 
