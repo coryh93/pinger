@@ -37,11 +37,10 @@ def PingAddr (ipaddr, openAddrs):
 	#if the ping responds, it returns 0. Since I want ones that don't respond, I want not equal to 0
 	
 	if response != 0: 
-		print "entered if statement"
 		openAddrs.put(ipaddr)
-		print "end of if"
 	print "thread end"
 	#Thread doesn't seem to be closing. I don't know how to fix this quite yet, but will work on it
+	return
 
 
 
@@ -100,25 +99,33 @@ print "Pinging Addresses...please wait a moment...Go play fooseball or something
 #		openAddrs.append(testAddr)
 
 
-#threading the functions
+#Multiprocessing the function
 #This only returns the last available address. Not ideal, but working.
 #need to figure out how to store available address into a list
-#Threads don't seem to be working in bash, but worked on windows. I'm not sure if this is a difference in OS, or if I just messed something up
-#But I swear to God mulitple threads were running.
-openAddrs = Queue.Queue()
-for x in range (1, 31):
+#I switched to multiprocessing, and now working on both OS. It still doesn't seem to exit the loop, but progress is progress.
+openAddrs = multiprocessing.Queue()
+for x in range (1, 30):
 
 	testAddr = IntToIP(ipArr[x])
 	
 	#spawns the thread
-	t = threading.Thread(target=PingAddr, args = (testAddr, openAddrs))
-	t.setDaemon(True)
-	t.start()
+	#t = threading.Thread(target=PingAddr, args = (testAddr, openAddrs))
+	#t.setDaemon(True)
+	#t.start()
+
+	#Trying with multiprocessing instead of threads
+	m = multiprocessing.Process(target=PingAddr, args=(testAddr, openAddrs))
+	m.start()
+
 	
 	
 	
-s = openAddrs.get()
-print s
+
+	
+print "Exiting threading loop"	
+	
+#s = openAddrs.get()
+#print s
 
 
 
