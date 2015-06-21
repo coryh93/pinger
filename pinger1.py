@@ -103,8 +103,10 @@ print "Pinging Addresses...please wait a moment...Go play fooseball or something
 #This only returns the last available address. Not ideal, but working.
 #need to figure out how to store available address into a list
 #I switched to multiprocessing, and now working on both OS. It still doesn't seem to exit the loop, but progress is progress.
+
 openAddrs = multiprocessing.Queue()
-for x in range (1, 30):
+#THIS IS MODIFIED FOR TEST!
+for x in range (1, 5):
 
 	testAddr = IntToIP(ipArr[x])
 	
@@ -117,15 +119,16 @@ for x in range (1, 30):
 	m = multiprocessing.Process(target=PingAddr, args=(testAddr, openAddrs))
 	m.start()
 
-	
+
+time.sleep(20)	
 	
 	
 
 	
 print "Exiting threading loop"	
 	
-#s = openAddrs.get()
-#print s
+s = openAddrs.get()
+print s
 
 
 
