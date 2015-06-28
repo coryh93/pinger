@@ -22,8 +22,9 @@ def IntToIP (ipRangeInt):
 	return '%(oct1)s.%(oct2)s.%(oct3)s.%(oct4)s' % locals()
 
 #Function determines platform, pings address, and returns whether the ping was successful or not
-def PingAddr (ipaddr, openAddrs):
+def PingAddr (testAddr):
 	plat = platform.system()
+	ipaddr = IntToIP(testAddr)
 
 	#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
 	if plat is 'Windows':
@@ -33,14 +34,21 @@ def PingAddr (ipaddr, openAddrs):
 
 	else:
 		response = os.system("ping -c 4 " + ipaddr)
+		print response
+		
 		
 	#if the ping responds, it returns 0. Since I want ones that don't respond, I want not equal to 0
 	
-	if response != 0: 
-		openAddrs.put(ipaddr)
-	print "thread end"
+	if response != 0:
+		
+		return (ipaddr)
+
+	else: 
+		"Returning jack shit"
+		return
+	
 	#Thread doesn't seem to be closing. I don't know how to fix this quite yet, but will work on it
-	return
+	
 
 
 
@@ -106,9 +114,9 @@ print "Pinging Addresses...please wait a moment...Go play fooseball or something
 
 openAddrs = multiprocessing.Queue()
 #THIS IS MODIFIED FOR TEST!
-for x in range (1, 5):
+#for x in range (1, 5):
 
-	testAddr = IntToIP(ipArr[x])
+	#testAddr = IntToIP(ipArr[x])
 	
 	#spawns the thread
 	#t = threading.Thread(target=PingAddr, args = (testAddr, openAddrs))
@@ -116,19 +124,29 @@ for x in range (1, 5):
 	#t.start()
 
 	#Trying with multiprocessing instead of threads
-	m = multiprocessing.Process(target=PingAddr, args=(testAddr, openAddrs))
-	m.start()
+	#m = multiprocessing.Process(target=PingAddr, args=(testAddr, openAddrs))
+	#m.start()
 
 
-time.sleep(20)	
+
+#It ALL WORKS. Need to test in lab environ.
+pool = multiprocessing.Pool(processes=31)
+results = [pool.apply_async(PingAddr, args=(ipArr[x],)) for x in range(1,31)]
+output = [p.get() for p in results]
+print(output)
+
+
+
+
 	
 	
 
 	
-print "Exiting threading loop"	
+
 	
-s = openAddrs.get()
-print s
+
+
+
 
 
 
