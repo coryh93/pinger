@@ -34,7 +34,7 @@ def PingAddr (testAddr):
 
 	else:
 		response = os.system("ping -c 4 " + ipaddr)
-		print response
+		
 		
 		
 	#if the ping responds, it returns 0. Since I want ones that don't respond, I want not equal to 0
@@ -44,7 +44,7 @@ def PingAddr (testAddr):
 		return (ipaddr)
 
 	else: 
-		"Returning jack shit"
+		
 		return
 	
 	#Thread doesn't seem to be closing. I don't know how to fix this quite yet, but will work on it
@@ -85,10 +85,7 @@ for x in range (0, 32):
 	newAddr = netIdInt + x
 	ipArr.append(newAddr)
 
-#testing that list worked
-#for x in range (0, 32):
-#	addr = ipArr[x]
-#	print (IntToIP(addr))
+
 
 
 
@@ -96,38 +93,9 @@ for x in range (0, 32):
 #This needs to have threading to quickly ping across all addresses
 print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
 
-#openAddrs = []
-
-#testing pring command
-#os.system("ping -c 4 8.8.8.8")
-#for x in range (1, 32):
-#	testAddr = IntToIP(ipArr[x])
-#
-#	if PingAddr(testAddr) == 0:
-#		openAddrs.append(testAddr)
 
 
 #Multiprocessing the function
-#This only returns the last available address. Not ideal, but working.
-#need to figure out how to store available address into a list
-#I switched to multiprocessing, and now working on both OS. It still doesn't seem to exit the loop, but progress is progress.
-
-openAddrs = multiprocessing.Queue()
-#THIS IS MODIFIED FOR TEST!
-#for x in range (1, 5):
-
-	#testAddr = IntToIP(ipArr[x])
-	
-	#spawns the thread
-	#t = threading.Thread(target=PingAddr, args = (testAddr, openAddrs))
-	#t.setDaemon(True)
-	#t.start()
-
-	#Trying with multiprocessing instead of threads
-	#m = multiprocessing.Process(target=PingAddr, args=(testAddr, openAddrs))
-	#m.start()
-
-
 
 #It ALL WORKS. Need to test in lab environ.
 pool = multiprocessing.Pool(processes=31)
@@ -137,24 +105,6 @@ print(output)
 
 
 
-
-	
-	
-
-	
-
-	
-
-
-
-
-
-
-
-
-#print all available addresses
-#for addr in openAddrs:
-#	print addr
 
 raw_input("Please press Return to close the Window")
 
