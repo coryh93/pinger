@@ -4,7 +4,7 @@
 
 #Written by Cory Hinton
 #Pinger v1 
-#Revision date 6/10/15
+#Revision date 7/1/15
 
 import os
 import platform
@@ -23,16 +23,19 @@ def IntToIP (ipRangeInt):
 
 #Function determines platform, pings address, and returns whether the ping was successful or not
 def PingAddr (testAddr):
+	
 	plat = platform.system()
 	ipaddr = IntToIP(testAddr)
 
 	#Look! Cross-platform functionality! All I need is web-based development and cloud, and then I've got myself a tech start-up
 	if plat is 'Windows':
+		
 		response = os.system("ping " + ipaddr)
 		
 		
 
 	else:
+		
 		response = os.system("ping -c 4 " + ipaddr)
 		
 		
@@ -52,59 +55,67 @@ def PingAddr (testAddr):
 
 
 
-
-#MAIN THREAD
-print "Welcome to the CALO Pinger!"
-networkID = raw_input('Please enter the network ID of the BB switch - ')
-
-
-#convert Network ID into int number
-netIdArr = map(int,networkID.split("."))
-netIdInt = (16777216 * netIdArr[0]) + (65536 * netIdArr[1]) + (256 * netIdArr[2]) + netIdArr[3] 
+if __name__ == "__main__":
+	#MAIN THREAD
+	
+	print "Welcome to the CALO Pinger!"
+	networkID = raw_input('Please enter the network ID of the BB switch - ')
 
 
-
-#establish the range for the IP
-ipRangeInt = netIdInt + 31
+	#convert Network ID into int number
+	netIdArr = map(int,networkID.split("."))
+	netIdInt = (16777216 * netIdArr[0]) + (65536 * netIdArr[1]) + (256 * netIdArr[2]) + netIdArr[3] 
 
 
 
-#convert IP range back into ip string format
-
-ipRange = IntToIP(ipRangeInt)
-
-
-#define array of ip
-
-ipArr = []
-
-#place each IP in array or comparable structure
-
-
-for x in range (0, 32):
-	newAddr = netIdInt + x
-	ipArr.append(newAddr)
+	#establish the range for the IP
+	ipRangeInt = netIdInt + 31
 
 
 
+	#convert IP range back into ip string format
+
+	ipRange = IntToIP(ipRangeInt)
 
 
-#ping across subnet, remove address that are not available
-#This needs to have threading to quickly ping across all addresses
-print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
+	#define array of ip
+
+	ipArr = []
+
+	#place each IP in array or comparable structure
 
 
-
-#Multiprocessing the function
-
-#It ALL WORKS. Need to test in lab environ.
-pool = multiprocessing.Pool(processes=31)
-results = [pool.apply_async(PingAddr, args=(ipArr[x],)) for x in range(1,31)]
-output = [p.get() for p in results]
-print(output)
+	for x in range (0, 32):
+		newAddr = netIdInt + x
+		ipArr.append(newAddr)
+		
 
 
 
 
-raw_input("Please press Return to close the Window")
+
+	#ping across subnet, remove address that are not available
+	#This needs to have threading to quickly ping across all addresses
+	print "Pinging Addresses...please wait a moment...Go play fooseball or something...."
+
+
+
+	#Multiprocessing the function
+
+	#It ALL WORKS. Need to test in lab environ.
+	
+	pool = multiprocessing.Pool(processes=31)
+	
+	results = [pool.apply_async(PingAddr, args=(ipArr[x],)) for x in range(1,31)]
+	
+	
+	#windows does not like this part
+	output = [p.get() for p in results]
+	
+	print(output)
+
+
+
+
+	raw_input("Please press Return to close the Window")
 
