@@ -4,7 +4,7 @@
 
 #Written by Cory Hinton
 #Pinger v1 
-#Revision date 7/1/15
+#Revision date 8/26/15
 
 import os
 import platform
